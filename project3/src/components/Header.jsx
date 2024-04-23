@@ -15,7 +15,7 @@ const Header = () => {
         <ul className='nav_menu'>
           <li><Link to="/profile">Profile</Link></li>
           <li><Link to="/create">Create post</Link></li>
-          <li><Link to="/member">Members</Link></li>
+          <li><Link to="/members">Members</Link></li>
           <li><Link to="/logout">Logout</Link></li>
         </ul>
         <button className='nav_toggle-btn'>

@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 import { dummyPosts } from '../data'
 import PostItem from '../components/PostItem'
 
-const CategoryPosts = () => {
+const AuthorPosts = () => {
   const [posts, setPosts] = useState(dummyPosts)
-  
+
   return (
     <section className='posts'>
       {posts.length > 0 ? <div className='container posts_container'>
@@ -16,4 +16,4 @@ const CategoryPosts = () => {
   )
 }
 
-export default CategoryPosts
+export default AuthorPosts
