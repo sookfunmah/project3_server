@@ -469,3 +469,9 @@ input, select, textarea{
   display: flex;
   gap: 1rem;
 }
+
+.ql-editor{
+  overflow: scroll;
+  background: var(--color-white);
+  height: 10rem;
+}

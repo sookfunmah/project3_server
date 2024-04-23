@@ -4,19 +4,10 @@ import ReactDOM from 'react-dom/client';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import './index.css';
 import Layout from './components/Layout';
-import ErrorPage from './pages/ErrorPage';
-import Home from './pages/Home'
-import PostDetail from './pages/PostDetail'
-import Register from './pages/Register'
-import Login from './pages/Login'
-import Members from './pages/Members'
-import CreatePost from './pages/CreatePost'
-import EditPosts from './pages/EditPosts'
-import CategoryPosts from './pages/CategoryPosts'
-import AuthorPosts from './pages/AuthorPosts'
-import Dashboard from './pages/Dashboard'
-import Logout from './pages/Logout'
-import UserProfile from './pages/UserProfile';
+
+import * as Pages from './pages';
+
+const { AuthorPosts, CategoryPosts, CreatePost, Dashboard, DeletePost, EditPosts, ErrorPage, Home, Login, Logout, Members, PostDetail, Register, UserProfile } = Pages;
 
 const router = createBrowserRouter([
   {
@@ -35,6 +26,7 @@ const router = createBrowserRouter([
       {path: "posts/users/:id", element: <AuthorPosts />},
       {path: "myposts/:id", element: <Dashboard />},
       {path: "posts/:id/edit", element: <EditPosts />},
+      {path: "posts/:id/delete", element: <DeletePost />},
       {path: "logout", element: <Logout />}
     ]
   }
