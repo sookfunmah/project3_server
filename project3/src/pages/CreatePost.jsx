@@ -28,13 +28,13 @@ const CreatePost = () => {
     ]
 
   return (
-    <section className='create-post'>
+    <section className='create_post'>
       <div className='container'>
         <h2>Create Post</h2>
         <p className='form_error_message'>
           This is an error
         </p>
-        <form className='form create-post_form'>
+        <form className='form create_post_form'>
           <input type='text' placeholder='Title' value={title} onChange={e => setTitle(e.target.value)} autoFocus/>
           <select name="category" value={category} onChange={e => setCategory(e.target.value)}>
             {

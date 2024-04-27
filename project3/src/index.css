@@ -2,7 +2,7 @@
 
 
 :root{
-  --color-primary:#6f6af8;
+  --color-primary:rgb(73, 117, 188);
   --color-white: #fff;
   --color-red: rgb(255,63,63);
   --color-gray-100: hsl(220,20%,10%,5%);
@@ -139,7 +139,7 @@ section{
   width: 100%;
 }
 
-.error-page h2 {
+.error_page h2 {
   margin-top: 3rem;
 }
 
@@ -175,7 +175,7 @@ nav{
   gap: 3rem;
 }
 
-.nav_toggle-btn{
+.nav_toggle_btn{
   display: none;
 }
 
@@ -229,7 +229,7 @@ footer{
   cursor: default;
 }
 
-.post.hover{
+.post:hover{
   box-shadow: 0.15rem 2rem rgba(0,0,0,0.1);
 }
 
@@ -239,7 +239,7 @@ footer{
   height: 16rem;
 }
 
-.post-content{
+.post_content{
   margin-top:1.5rem ;
 }
 
@@ -260,40 +260,40 @@ footer{
   align-items: flex-start;
 }
 
-.post_author-avatar{
+.post_author_avatar{
   width:2.5rem;
   aspect-ratio: 1/1 ;
   border-radius: var(--radius-2);
   overflow: hidden;
 }
 
-.post-detail{
+.post_detail{
   width:var(--form-width);
   background: var(--color-white);
   margin-inline: auto;
   padding: 2rem 0;
 }
 
-.post-detail_header{
+.post_detail_header{
   display: flex;
   justify-content:  space-between;
   margin-bottom: 1.5rem;
 }
 
-.post-detail_buttons{
+.post_detail_buttons{
   display: flex;
   gap: 1rem;
   align-items: center;
 }
 
-.post-detail_thumbnail{
+.post_detail_thumbnail{
   margin: 1rem 0;
   height: fit-content;
   max-height: 30rem;
   overflow: hidden;
 }
 
-.post-detail_p{
+.post_detail_p{
   margin-bottom: 0.7rem;
 }
 
@@ -320,7 +320,7 @@ input, select, textarea{
   margin-bottom: 1rem;
 }
 
-.register, .login, .create-post {
+.register, .login, .create_post , .edit_post {
   width: var(--form-width);
   margin-inline: auto;
   height: calc(100vh -12rem);
@@ -328,7 +328,7 @@ input, select, textarea{
   place-items: center;
 }
 
-.register h2, .login h2, .create-post h2 {
+.register h2, .login h2, .create_post h2 {
   margin-bottom: 2rem;
 }
 
@@ -339,6 +339,12 @@ input, select, textarea{
 
 .register small a, .login small a {
   color: var(--color-primary)
+}
+
+.ql-editor{
+  overflow-y: auto;
+  background: var(--color-white);
+  height: 8rem !important;
 }
 
 .members_container{
@@ -405,7 +411,7 @@ input, select, textarea{
   visibility: hidden;
 }
 
-.avatar_form label, .profile_avatar-btn{
+.avatar_form label, .profile_avatar_btn{
   background: var(--color-gray-900);
   color: var(--color-white);
   font-size: 1.3rem;
@@ -419,7 +425,7 @@ input, select, textarea{
   border-radius: 50%;
 }
 
-.profile_avatar-btn{
+.profile_avatar_btn{
   cursor: pointer;
   padding:0;
   font-size: 1.3rem;
@@ -452,26 +458,20 @@ input, select, textarea{
   border-radius: var(--radius-3);
 }
 
-.dashboard_post-info {
+.dashboard_post_info {
   display: flex;
   gap: 2rem;
   width: 100%;
   align-items: center;
 }
 
-.dashboard_post-thumbnail{
+.dashboard_post_thumbnail{
   width: 4rem;
   border-radius: var(--radius-1);
   overflow: hidden;
 }
 
-.dashboard_post-actions{
+.dashboard_post_actions{
   display: flex;
   gap: 1rem;
-}
-
-.ql-editor{
-  overflow: scroll;
-  background: var(--color-white);
-  height: 10rem;
 }

@@ -18,7 +18,7 @@ const Header = () => {
           <li><Link to="/members">Members</Link></li>
           <li><Link to="/logout">Logout</Link></li>
         </ul>
-        <button className='nav_toggle-btn'>
+        <button className='nav_toggle_btn'>
           <AiOutlineClose></AiOutlineClose>
         </button>
       </div>

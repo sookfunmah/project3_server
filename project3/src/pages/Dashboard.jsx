@@ -11,13 +11,13 @@ const Dashboard = () => {
           { 
             posts.map(post => {
               return <article key={post.id} className='dashboard_post'>
-                <div className='dashboard_post-info'>
-                  <div className='dashboard_post-thumbnail'>
+                <div className='dashboard_post_info'>
+                  <div className='dashboard_post_thumbnail'>
                     <img src = {post.thumbnail} alt="" />
                   </div>
                   <h5>{post.title}</h5>
                 </div>
-                <div className='dashboard_post-actions'>
+                <div className='dashboard_post_actions'>
                   <Link to={`/posts/${post.id}`} className='btn sm '>View</Link>
                   <Link to={`/posts/${post.id}/edit`} className='btn sm primary '>Edit</Link>
                   <Link to={`/posts/${post.id}/delete`} className='btn sm danger '>Delete</Link>
