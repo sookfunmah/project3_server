@@ -1,9 +1,17 @@
-const {Router} = require('express')
+const { Router } = require("express");
+const router = Router();
+const authMiddleware = require('../middleware/authMiddleware')
 
-const router = Router()
+const {createPost, getPost,getPosts,getCatPosts,getUserPosts,editPost,deletePost } = require("../controllers/postControllers")
 
-router.get('/', (req,res,next) => {
-  res.json("this is post route")
-})
+router.post('/', authMiddleware, createPost)
+router.get('/', getPosts)
+router.get('/:id', getPost)
 
-module.exports = router
+
+router.get('/categories/:category',getCatPosts)
+router.get('/users/:id',getUserPosts)
+router.patch('/:id', authMiddleware, editPost)
+router.delete('/:id', authMiddleware, deletePost)
+
+module.exports = router;

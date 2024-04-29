@@ -143,7 +143,7 @@ const editUser = async (req,res, next) => {
       return next(new HttpError ("Invalid current password", 422))
     }
 
-    if (newPassword !== newConfirmNewPassword){
+    if (newPassword !== confirmNewPassword){
       return next (new HttpError ("New Password does not match", 422))
     }
 
