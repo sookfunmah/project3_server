@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Avatar from '../images/avatar1.jpeg'
 import { FaEdit, FaCheck } from 'react-icons/fa'
+import axios from 'axios'
 
 const UserProfile = () => {
   const [avatar,setAvatar] = useState (Avatar)
@@ -14,7 +15,7 @@ const UserProfile = () => {
   return (
     <section className='profile'>
       <div className='container profile_container'>
-        <Link to={`/myposts/admin`} className='btn'>My Posts</Link>
+        <Link to={`/myposts/kevin`} className='btn'>My Posts</Link>
         <div className='profile_details'>
           <div className='avatar_wrapper'>
             <div className='profile_avatar'>
@@ -25,13 +26,13 @@ const UserProfile = () => {
               <input type="file" name="avatar" id="avatar" />
               <label htmlFor='avatar'><FaEdit /></label>
             </form>
-            <button className='profile_avatar-btn'><FaCheck /></button>
+            <button className='profile_avatar_btn'><FaCheck /></button>
           </div>
           <h1>Sheldon Cooper</h1>
 
           {/* form to update user details */}
           <form className='form profile_form'>
-            <p className='form_error-message'> This is an error message</p>
+            <p className='form_error_message'> This is an error message</p>
             <input type='text' placeholder='Full Name' value={name} onChange={e => setName(e.target.value)} />
             <input type='email' placeholder='Email' value={email} onChange={e => setEmail(e.target.value)} />
             <input type='password' placeholder='Current Password' value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} />

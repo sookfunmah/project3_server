@@ -5,14 +5,15 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import './index.css';
 import Layout from './components/Layout';
 
+import UserProvider from './context/userContext'
 import * as Pages from './pages';
 
-const { AuthorPosts, CategoryPosts, CreatePost, Dashboard, DeletePost, EditPosts, ErrorPage, Home, Login, Logout, Members, PostDetail, Register, UserProfile } = Pages;
+const { AuthorPosts, CategoryPosts, CreatePost, Dashboard, DeletePost, EditPosts, ErrorPage, Home, Login, Logout, Authors, PostDetail, Register, UserProfile } = Pages;
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Layout/>,
+    element: <UserProvider><Layout/></UserProvider>,
     errorElement: <ErrorPage/>,
     children: [
       {index: true, element: <Home />},
@@ -20,13 +21,12 @@ const router = createBrowserRouter([
       {path: "register", element: <Register />},
       {path: "login", element: <Login />},
       {path: "profile/:id", element: <UserProfile />},
-      {path: "members", element: <Members />},
+      {path: "authors", element: <Authors />},
       {path: "create", element: <CreatePost />},
       {path: "posts/categories/:category", element: <CategoryPosts />},
       {path: "posts/users/:id", element: <AuthorPosts />},
       {path: "myposts/:id", element: <Dashboard />},
       {path: "posts/:id/edit", element: <EditPosts />},
-      {path: "posts/:id/delete", element: <DeletePost />},
       {path: "logout", element: <Logout />}
     ]
   }

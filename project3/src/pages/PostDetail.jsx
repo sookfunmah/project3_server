@@ -1,27 +1,67 @@
-import React from 'react'
+import React, { useContext, useEffect, useState }from 'react'
 import PostAuthor from '../components/PostAuthor'
-import { Link } from 'react-router-dom'
-import Thumbnail from '../images/thumb1.jpeg'
+import { Link, useParams, useNavigate } from 'react-router-dom'
+import Loader from '../components/Loader'
+import { UserContext } from '../context/userContext'
+import axios from 'axios'
 
 const PostDetail = () => {
+  const {id} = useParams()
+  const [post,setPost] = useState(null)
+  const [creatorID, setCreatorID] = useState(null)
+  const [error, setError] = useState('')
+  const [isLoading,setIsLoading] = useState(false)
+
+  const {currentUser} = useContext(UserContext)
+  const token = currentUser?.token;
+
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    const getPost = async () => {
+      setIsLoading(true);
+      try{
+        const response = await axios.get(`${process.env.REACT_APP_URL}/posts/${id}`)
+        setPost(response.data)
+        setCreatorID(response.data.creator)
+      }catch (error) {
+        console.log(error)
+      }
+      setIsLoading(false)
+    }
+    getPost();
+  }, [])
+
+  if(isLoading) {
+    return <Loader/>
+  }
+
+  const removePost = async () => {
+    const response = await axios.delete(`${process.env.REACT_APP_URL}/posts/${id}`, {withCredentials: true, headers: {Authorization: `Bearer ${token}`}})
+    if(!response) {
+        setError("Post deletion failed. Please try again")
+    }
+
+    navigate('/')
+}
+
   return (
     <section className="post_detail">
-      <div className='container post_detail_container'>
-        <div className='postdetail_header'>
-          <PostAuthor/>
-          <div className='post_detail_buttons'>
-            <Link to={`posts/admin/edit`} className='btn sm primary'> Edit</Link>
-            <Link to={`posts/admin/delete`} className='btn sm danger'> Delete</Link>
-          </div>
+      {error && <p className='error'>{error}</p>}
+      {post && <div className='container post_detail_container'>
+        <div className='post_detail_header'>
+          <PostAuthor authorID={creatorID} createdAt={post?.createdAt}/>
+          {currentUser?.id === post?.creator && <div className='post_detail_buttons'>
+            <Link to={`posts/${post?._id}/edit`} className='btn sm primary'> Edit</Link>
+            <Link className='btn sm danger' onClick={removePost}>Delete</Link>
+          </div>}
         </div>
-        <h1> Testing title </h1>
+        <h1> {post?.title}</h1>
         <div className='post_detail_thumbnail'>
-          <img src={Thumbnail} alt="" />
+          <img src={`${process.env.REACT_APP_ASSETS_URL}/uploads/${post?.thumbnail}`} alt="" />
         </div>
-          <p> 
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae quidem necessitatibus modi aut quis! Ab labore itaque nisi magnam eligendi ea a, facere veniam tenetur ad. Cumque magnam ea cupiditate?
-          </p>
-      </div>
+        <p dangerouslySetInnerHTML={{__html: post.description}}> </p>
+      </div>}
     </section>
   )
 }

@@ -1,6 +1,6 @@
 const {Router} = require('express')
 
-const {registerUser, loginUser, getMembers,getUser,changeAvatar, editUser} = require ("../controllers/userControllers")
+const {registerUser, loginUser, getAuthors,getUser,changeAvatar, editUser} = require ("../controllers/userControllers")
 
 const authMiddleware = require ('../middleware/authMiddleware')
 
@@ -9,7 +9,7 @@ const router = Router()
 router.post('/register', registerUser)
 router.post('/login', loginUser)
 router.get('/:id',getUser)
-router.get('/', getMembers)
+router.get('/', getAuthors)
 router.post('/change-avatar', authMiddleware, changeAvatar)
 router.patch('/edit-user', authMiddleware, editUser)
 

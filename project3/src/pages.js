@@ -3,7 +3,7 @@ export { default as Home } from './pages/Home';
 export { default as PostDetail } from './pages/PostDetail';
 export { default as Register } from './pages/Register';
 export { default as Login } from './pages/Login';
-export { default as Members } from './pages/Members';
+export { default as Authors } from './pages/Authors';
 export { default as CreatePost } from './pages/CreatePost';
 export { default as EditPosts } from './pages/EditPosts';
 export { default as CategoryPosts } from './pages/CategoryPosts';

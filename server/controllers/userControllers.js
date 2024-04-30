@@ -158,14 +158,14 @@ const editUser = async (req,res, next) => {
   }
 }
 
-const getMembers = async(req, res,next) =>{
+const getAuthors = async(req, res,next) =>{
   try {
-    const members=await User.find().select('-password');
-    res.json(members);
+    const authors=await User.find().select('-password');
+    res.json(authors);
   } catch (error) {
     return next (new HttpError(error))
 
   }
 }
 
-module.exports = {registerUser, loginUser, getMembers,getUser,changeAvatar, editUser}
+module.exports = {registerUser, loginUser, getAuthors,getUser,changeAvatar, editUser}

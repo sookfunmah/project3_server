@@ -5,9 +5,7 @@ const fs = require("fs");
 const { v4: uuid } = require("uuid");
 const HttpError = require("../models/errorModel");
 
-//============== CREATE A POST ==================
-//POST: api/post
-//PROTECTED
+
 const createPost = async (req, res, next) => {
   try {
     let { title, category, description } = req.body;
@@ -27,23 +25,12 @@ const createPost = async (req, res, next) => {
     let fileName = thumbnail.name;
     let splittedFilename = fileName.split(".");
     let newFilename =
-      splittedFilename[0] +
-      uuid() +
-      "." +
-      splittedFilename[splittedFilename.length - 1];
-    thumbnail.mv(
-      path.join(__dirname, "..", "/uploads", newFilename),
-      async (err) => {
+      splittedFilename[0] + uuid() + "." + splittedFilename[splittedFilename.length - 1];
+    thumbnail.mv(path.join(__dirname, "..", "/uploads", newFilename), async (err) => {
         if (err) {
           return next(new HttpError(err));
         } else {
-          const newPost = await Post.create({
-            title,
-            category,
-            description,
-            thumbnail: newFilename,
-            creator: req.user.id,
-          });
+          const newPost = await Post.create({title, category, description, thumbnail: newFilename, creator: req.user.id,});
           if (!newPost) {
             return next(new HttpError("Post couldn't be created", 422));
           }
