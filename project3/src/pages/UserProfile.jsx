@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import Avatar from '../images/avatar1.jpeg'
 import { FiEdit } from 'react-icons/fi'
 import { BiCheck } from 'react-icons/bi'
 import axios from 'axios'
@@ -32,7 +31,7 @@ const UserProfile = () => {
 
     useEffect(() => {
         const getUser = async () => {
-            const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/users/${id}`, {withCredentials: true, headers: {Authorization: `Bearer ${token}`}})
+            const response = await axios.get(`${process.env.REACT_APP_URL}/users/${id}`, {withCredentials: true, headers: {Authorization: `Bearer ${token}`}})
             const {name, email, avatar} = response.data
             setName(name)
             setEmail(email)
@@ -46,7 +45,7 @@ const UserProfile = () => {
         try {
             const postData = new FormData()
             postData.set('avatar', avatar);
-            const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/users/change-avatar`, postData, {withCredentials: true, headers: {Authorization: `Bearer ${token}`}})
+            const response = await axios.post(`${process.env.REACT_APP_URL}/users/change-avatar`, postData, {withCredentials: true, headers: {Authorization: `Bearer ${token}`}})
             setAvatar(response?.data.avatar)
         } catch (error) {
             setError(error.response.data.message)
@@ -63,7 +62,7 @@ const UserProfile = () => {
             userData.set('newPassword', newPassword)
             userData.set('confirmNewPassword', confirmNewPassword)
     
-            const response = await axios.patch(`${process.env.REACT_APP_BASE_URL}/users/edit-user`, userData, {withCredentials: true, headers: {
+            const response = await axios.patch(`${process.env.REACT_APP_URL}/users/edit-user`, userData, {withCredentials: true, headers: {
                 Authorization: `Bearer ${token}`
             }})
     
@@ -82,7 +81,7 @@ const UserProfile = () => {
         <div className='profile_details'>
           <div className='avatar_wrapper'>
             <div className='profile_avatar'>
-            <img src={`${process.env.REACT_APP_ASSET_URL}/uploads/${avatar}`} alt="" />
+            <img src={`${process.env.REACT_APP_ASSETS_URL}/uploads/${avatar}`} alt="" />
             </div>
             {/*Form */}
             <form className='avatar_form'>
