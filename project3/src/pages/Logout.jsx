@@ -3,13 +3,16 @@ import { useNavigate } from 'react-router-dom'
 import { UserContext } from '../context/userContext'
 
 const Logout = () => {
-  const {setCurrentUser} = useContext(UserContext)
-  const navigate = useNavigate();
+  const {currentUser, setCurrentUser} = useContext(UserContext)
 
-  setCurrentUser(null)
+  useEffect(() => {
+    setCurrentUser(null)
+  }, [])
+  
+  const navigate = useNavigate()
   navigate('/login')
   return (
-    <></>
+    <div></div>
   )
 }
 

@@ -4,6 +4,7 @@ const path = require("path");
 const fs = require("fs");
 const { v4: uuid } = require("uuid");
 const HttpError = require("../models/errorModel");
+const { mongoose } = require('mongoose')
 
 
 const createPost = async (req, res, next) => {
@@ -115,11 +116,11 @@ const getUserPosts = async (req, res, next) => {
 //PATCH: api/posts/:id
 //PROTECTED
 const editPost = async (req, res, next) => {
-  try {
+ 
     let fileName;
     let newFilename;
     let updatedPost;
-    const postId = req.params.id;
+    try { const postId = req.params.id;
     let { title, category, description } = req.body;
 
     //ReactQuill has a paragraph opening and closing tag with a break tag in between so there are 11 chars in already.
@@ -184,33 +185,28 @@ const editPost = async (req, res, next) => {
 
     res.status(200).json(updatedPost);
   } catch (error) {
-    return next(new HttpError(error));
+      return next(new HttpError(error))
   }
-};
-
-
+}
 
 
 //============== DELETE POST ==================
 //DELETE: api/posts/:id
 //PROTECTED
-const deletePost = async (req, res, next) => {
-  try {
+const removePost = async (req, res, next) => {
+
     const postId = req.params.id;
     if (!postId) {
       return next(new HttpError("Post Unavailable"), 400);
     }
     const post = await Post.findById(postId);
-
-    //Check - creator can only delete own post
     const fileName = post?.thumbnail;
+
     if (req.user.id == post.creator) {
       //delete thumbnail from uploads folder
-      fs.unlink(
-        path.join(__dirname, "..", "uploads", fileName),
-        async (err) => {
+      fs.unlink(path.join(__dirname, "..", "uploads", fileName), async (err) => {
           if (err) {
-            return next(new HttpError(err));
+            return next(err);
           } else {
             await Post.findByIdAndDelete(postId);
             //find user and reduce post count by 1
@@ -219,15 +215,11 @@ const deletePost = async (req, res, next) => {
             await User.findByIdAndUpdate(req.user.id, { posts: userPostCount });
             res.json(`Post ${postId} deleted successfully.`);
           }
-        }
-      );
+        })
     } else {
-      return next(new HttpError("Post couldn't be deleted", 403));
+        return next(new HttpError("Couldn't delete post.", 403))
     }
-  } catch (error) {
-    return next(new HttpError(error));
-  }
-};
+}
 
 module.exports = {
   createPost,
@@ -236,5 +228,5 @@ module.exports = {
   getCatPosts,
   getUserPosts,
   editPost,
-  deletePost,
+  removePost,
 };

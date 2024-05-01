@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import './index.css';
 import Layout from './components/Layout';
@@ -8,7 +7,7 @@ import Layout from './components/Layout';
 import UserProvider from './context/userContext'
 import * as Pages from './pages';
 
-const { AuthorPosts, CategoryPosts, CreatePost, Dashboard, DeletePost, EditPosts, ErrorPage, Home, Login, Logout, Authors, PostDetail, Register, UserProfile } = Pages;
+const { AuthorPosts, CategoryPosts, CreatePost, Dashboard, EditPosts, ErrorPage, Home, Login, Logout, Authors, PostDetail, Register, UserProfile } = Pages;
 
 const router = createBrowserRouter([
   {

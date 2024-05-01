@@ -47,7 +47,7 @@ const EditPosts = () => {
     useEffect(() => {
       const getPost = async () => {
           try {
-              const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/posts/${params.id}`)
+              const response = await axios.get(`${process.env.REACT_APP_URL}/posts/${params.id}`)
               setTitle(response?.data.title)
               setDescription(response?.data.description)
 
@@ -70,7 +70,7 @@ const EditPosts = () => {
     postData.set('thumbnail', thumbnail)
 
     try {
-        const response = await axios.patch(`${process.env.REACT_APP_BASE_URL}/posts/${params.id}`, postData, {withCredentials: true, headers: {Authorization: `Bearer ${token}`}})
+        const response = await axios.patch(`${process.env.REACT_APP_URL}/posts/${params.id}`, postData, {withCredentials: true, headers: {Authorization: `Bearer ${token}`}})
         if(response.status == 200) {
             return navigate('/')
         }

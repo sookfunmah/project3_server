@@ -52,7 +52,7 @@ const PostDetail = () => {
         <div className='post_detail_header'>
           <PostAuthor authorID={creatorID} createdAt={post?.createdAt}/>
           {currentUser?.id === post?.creator && <div className='post_detail_buttons'>
-            <Link to={`posts/${post?._id}/edit`} className='btn sm primary'> Edit</Link>
+            <Link to={`/posts/${post?._id}/edit`} className='btn sm primary'> Edit</Link>
             <Link className='btn sm danger' onClick={removePost}>Delete</Link>
           </div>}
         </div>
@@ -60,7 +60,7 @@ const PostDetail = () => {
         <div className='post_detail_thumbnail'>
           <img src={`${process.env.REACT_APP_ASSETS_URL}/uploads/${post?.thumbnail}`} alt="" />
         </div>
-        <p dangerouslySetInnerHTML={{__html: post.description}}> </p>
+        <div dangerouslySetInnerHTML={{ __html: post?.description }} />
       </div>}
     </section>
   )
