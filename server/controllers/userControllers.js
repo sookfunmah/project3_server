@@ -40,20 +40,23 @@ const registerUser = async (req,res, next) => {
 const loginUser = async (req,res, next) => {
   try {
     const {email,password} = req.body;
+    console.log("email",email)
     if(!email || !password) {
       return next(new HttpError("Fill in all fields", 422))
     }
     const newEmail = email.toLowerCase();
     
     const user = await User.findOne({email:newEmail})
+    console.log("user:", user)
     if (!user) {
       return next(new HttpError("Invalid credentials",422))
     }
-
+    console.log("password:", password)
     const comparePass = await bcrypt.compare(password, user.password)
     if(!comparePass) {
       return next(new HttpError("Wrong Password",422))
     }
+
 
     const {_id: id, name} = user;
     const token = jwt.sign({id,name}, process.env.JWT_SECRET, {expiresIn:"1d"})

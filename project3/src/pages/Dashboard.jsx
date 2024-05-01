@@ -62,9 +62,9 @@ const removePost = async (postId) => {
                 <h5>{post.title}</h5>
               </div>
               <div className='dashboard_post_actions'>
-                <Link to={`/posts/${post._id}`} className='btn sm '>View</Link>
-                <Link to={`/posts/${post._id}/edit`} className='btn sm primary '>Edit</Link>
-                <Link to={`/posts/${post._id}/delete`} className='btn sm danger '>Delete</Link>
+                <Link to={`/posts/${post._id}`} className='btn sm'>View</Link>
+                <Link to={`/posts/${post._id}/edit`} className='btn primary sm'>Edit</Link>
+                <Link onClick={() => removePost(post._id)} className='btn danger sm'>Delete</Link>
               </div>
             </article>
           })

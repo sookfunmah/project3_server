@@ -1,19 +1,22 @@
 import React, { useState, useContext, useEffect } from 'react'
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { UserContext } from '../context/userContext';
+import axios from 'axios';
 
 const EditPosts = () => {
-  const [title, setTitle] =useState('');
+  const [title, setTitle] = useState('')
   const [category, setCategory] = useState('Uncategorized')
-  const [description,setDescription] = useState('')
-  const [thumbnail, setThumbnail] =useState('')
+  const [description, setDescription] = useState('')
+  const [thumbnail, setThumbnail] = useState('')
+  const [error, setError] = useState('')
 
+  const params = useParams()
+  const navigate = useNavigate()
   const {currentUser} = useContext(UserContext)
   const token = currentUser?.token;
 
-  const navigate = useNavigate()
 
   useEffect(() =>{
     if(!token) {
@@ -40,14 +43,57 @@ const EditPosts = () => {
       'link', 'image'
     ]
 
+    
+    useEffect(() => {
+      const getPost = async () => {
+          try {
+              const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/posts/${params.id}`)
+              setTitle(response?.data.title)
+              setDescription(response?.data.description)
+
+          } catch (error) {
+              console.log(error)
+              navigate('/login')
+          }
+  }
+
+  getPost();
+  }, [])
+  
+  const EditPosts = async (e) => {
+    e.preventDefault();
+
+    const postData = new FormData();
+    postData.set('title', title);
+    postData.set('category', category);
+    postData.set('description', description);
+    postData.set('thumbnail', thumbnail)
+
+    try {
+        const response = await axios.patch(`${process.env.REACT_APP_BASE_URL}/posts/${params.id}`, postData, {withCredentials: true, headers: {Authorization: `Bearer ${token}`}})
+        if(response.status == 200) {
+            return navigate('/')
+        }
+    } catch (err) {
+        if(err.response.data.message === "TypeError: Cannot read properties of null (reading 'thumbnail')") {
+            setError("Please choose a thumbnail")
+        } else {
+            setError(err.response.data.message);
+        }
+    }
+}
+
+const changeCat = (newCat) => {
+    setCategory(newCat)
+}
+
+
   return (
-    <section className='edit_post'>
-      <div className='container'>
+    <section className='create_post'>
+      <div className='container create_post_container'>
         <h2>Edit Post</h2>
-        <p className='form_error_message'>
-          This is an error
-        </p>
-        <form className='form create_post_form'>
+        {error && <p className="form_error_message">{error} </p>}
+        <form onSubmit={EditPosts} className='form create_post_form'encType="multipart/form-data">
           <input type='text' placeholder='Title' value={title} onChange={e => setTitle(e.target.value)} autoFocus/>
           <select name="category" value={category} onChange={e => setCategory(e.target.value)}>
             {
