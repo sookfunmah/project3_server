@@ -4,6 +4,7 @@ const path = require("path");
 const fs = require("fs");
 const { v4: uuid } = require("uuid");
 const HttpError = require("../models/errorModel");
+const { mongoose } = require('mongoose')
 
 
 const createPost = async (req, res, next) => {
@@ -115,11 +116,11 @@ const getUserPosts = async (req, res, next) => {
 //PATCH: api/posts/:id
 //PROTECTED
 const editPost = async (req, res, next) => {
-  try {
+ 
     let fileName;
     let newFilename;
     let updatedPost;
-    const postId = req.params.id;
+    try { const postId = req.params.id;
     let { title, category, description } = req.body;
 
     //ReactQuill has a paragraph opening and closing tag with a break tag in between so there are 11 chars in already.
@@ -128,97 +129,69 @@ const editPost = async (req, res, next) => {
       return next(new HttpError("Fill in all fields"), 422);
     }
 
-    //get oldPost from database
-    const oldPost = await Post.findById(postId);
-    if (req.user.id == oldPost.creator) {
-      return next(
-        new HttpError("You are not authorized to edit this post", 403)
-      );
-    }
+    // get old post from db
+    const oldPost = await Post.findById(postID);
 
-    if (!req.files) {
-      updatedPost = await Post.findByIdAndUpdate(
-        postId,
-        { title, category, description },
-        { new: true }
-      );
+    if(req.user.id == oldPost.creator) {
+    // update post without thumbnail
+    if(!req.files) {
+        updatedPost = await Post.findByIdAndUpdate(postID, {title, category, description}, {new: true})
     } else {
-      const oldPost = await Post.findById(postId);
-      //delete old thumbnail from upload
-      fs.unlink(
-        path.join(__dirname, "..", "uploads", oldPost.thumbnail),
-        async (err) => {
-          if (err) {
-            return next(new HttpError(err));
-          }
-        }
-      );
-
-      //upload new thumbnail
-      const { thumbnail } = req.files;
-
-      //check file size
-      if (thumbnail.size > 2000000) {
-        return next(new HttpError("Thumbnail too big, Max is 2Mb"));
-      }
-
-      fileName = thumbnail.name;
-      let splittedFilename = fileName.split(".");
-      newFilename =
-        splittedFilename[0] +
-        uuid() +
-        "." +
-        splittedFilename[splittedFilename.length - 1];
-      thumbnail.mv(
-        path.join(__dirname, "..", "uploads", newFilename),
-        async (err) => {
-          if (err) {
-            return next(new HttpError(err));
-          }
-
-          updatedPost = await Post.findByIdAndUpdate(
-            postId,
-            { title, category, description, thumbnail: newFilename },
-            { new: true }
-          );
-        }
-      );
+    // delete old thumbnail from uploads
+      fs.unlink(path.join(__dirname, '..', 'uploads', oldPost.thumbnail), async (err) => {
+    if (err) {
+        return next(new HttpError(err))
+    }})
+        
+    // upload new thumbnail
+    const {thumbnail} = req.files;
+    // check file size
+    if(thumbnail.size > 2000000) {
+        return next(new HttpError("Thumbnail too big. Should be less than 2mb"))
     }
-     //File upload complted, update post
-     if (!updatedPost) {
-        return next(new HttpError("Couldn't update post", 400));
+    fileName = thumbnail.name;
+    let splittedFilename = fileName.split('.')
+    newFilename = splittedFilename[0] + uuid() + "." + splittedFilename[splittedFilename.length - 1]
+    
+    thumbnail.mv(path.join(__dirname, '..', 'uploads', newFilename), async (err) => {
+      if(err) {
+        return next(new HttpError(err))
+          }
+      })
+        updatedPost = await Post.findByIdAndUpdate(postID, {title, category, description, thumbnail: newFilename}, {new: true})
+        }
+      } else {
+          return next(new HttpError("Couldn't update post.", 403))
       }
 
-    res.status(200).json(updatedPost);
+      if(!updatedPost) {
+          return next(new HttpError("Couldn't update post", 400))
+      }
+      res.json(updatedPost)
 
   } catch (error) {
-    return next(new HttpError(error));
+      return next(new HttpError(error))
   }
-};
-
-
+}
 
 
 //============== DELETE POST ==================
 //DELETE: api/posts/:id
 //PROTECTED
-const deletePost = async (req, res, next) => {
-  try {
+const removePost = async (req, res, next) => {
+
     const postId = req.params.id;
     if (!postId) {
       return next(new HttpError("Post Unavailable"), 400);
     }
     const post = await Post.findById(postId);
-
-    //Check - creator can only delete own post
     const fileName = post?.thumbnail;
+
     if (req.user.id == post.creator) {
       //delete thumbnail from uploads folder
-      fs.unlink(
-        path.join(__dirname, "..", "uploads", fileName),
-        async (err) => {
+      fs.unlink(path.join(__dirname, "..", "uploads", fileName), async (err) => {
           if (err) {
-            return next(new HttpError(err));
+            return next(err);
           } else {
             await Post.findByIdAndDelete(postId);
             //find user and reduce post count by 1
@@ -227,15 +200,11 @@ const deletePost = async (req, res, next) => {
             await User.findByIdAndUpdate(req.user.id, { posts: userPostCount });
             res.json(`Post ${postId} deleted successfully.`);
           }
-        }
-      );
+        })
     } else {
-      return next(new HttpError("Post couldn't be deleted", 403));
+        return next(new HttpError("Couldn't delete post.", 403))
     }
-  } catch (error) {
-    return next(new HttpError(error));
-  }
-};
+}
 
 module.exports = {
   createPost,
@@ -244,5 +213,5 @@ module.exports = {
   getCatPosts,
   getUserPosts,
   editPost,
-  deletePost,
+  removePost,
 };
