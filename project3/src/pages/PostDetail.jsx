@@ -52,7 +52,7 @@ const PostDetail = () => {
         <div className='post_detail_header'>
           <PostAuthor authorID={creatorID} createdAt={post?.createdAt}/>
           {currentUser?.id === post?.creator && <div className='post_detail_buttons'>
-            <Link to={`posts/${post?._id}/edit`} className='btn sm primary'> Edit</Link>
+            <Link to={`/posts/${post?._id}/edit`} className='btn sm primary'> Edit</Link>
             <Link className='btn sm danger' onClick={removePost}>Delete</Link>
           </div>}
         </div>
